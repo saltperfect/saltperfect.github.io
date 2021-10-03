@@ -17,11 +17,10 @@
       <pubDate>Sun, 03 Oct 2021 11:32:47 +0530</pubDate>
       
       <guid>https://saltperfect.github.io/posts/compiler101/</guid>
-      <description>This is a my first blog on my first hugo site.
-It is very easy in the hustle and bustle to keep up with all the cloud technologies, to forget about the basic principles of writing instructions for computers.
+      <description>It is very easy in the hustle and bustle to keep up with all the cloud technologies, to forget about the basic principles of writing instructions for computers.
 Yesterday, I sat down with @aditya1304jain and asked him to tell me all about it.
 Here are few of the points that you might benefit from.
-Compiler and Languages Every language has a frontend and a backend.</description>
+Compiler and Languages Every language has a frontend and a backend. Front is platform independent and backend is dependent.</description>
     </item>
     
   </channel>
