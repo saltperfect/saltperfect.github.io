@@ -73,16 +73,16 @@
 <p>Yesterday, I sat down with <a href="https://twitter.com/aditya1304jain">@aditya1304jain</a> and asked him to tell me all about it.</p>
 <p>Here are few of the points that you might benefit from.</p>
 <h1 id="compiler-and-languages">Compiler and Languages</h1>
-<p>Every language has a frontend and a backend. Front is platform independent and backend is dependent. Some language backend need information about platform at compile time and some don&rsquo;t. This point will come up in our discussion below.</p>
+<p>Every compiler has a frontend and a backend. Frontend is platform independent and backend is dependent. Some compiler backend need information about platform at compile time and some don&rsquo;t. This point will come up in our discussion below.</p>
 <ol>
 <li>
-<p>C/C++/Go - The cpp compiler takes in .cpp files and optimizes source code, generates a assembly in the process which is them converted to instruction set for certain types of processor architecture. Hence cpp needs the information about which platform the instruction set will run on at compile time.</p>
+<p>C/C++/Go - The cpp/c/go compiler takes in <code>.cpp/.c/.go</code> files and optimizes source code, generates a assembly in the process which is them converted to instruction set for certain types of processor architecture. Hence cpp needs the information about which platform the instruction set will run on at compile time.</p>
 </li>
 <li>
-<p>Java - When we do <code>javac</code> on any <code>.java</code> file it creates a <code>.class</code> file. As we know that java runs on virtual machine hence it&rsquo;s the work of virtual machine to understand what type of byte code <code>.class</code> file should be generated to successfully run the code.</p>
+<p>Java - When we do <code>javac</code> on any <code>.java</code> file it creates a <code>.class</code> file. As we know that java runs on virtual machine hence once the byte code is generated ie <code>.class</code> file, it is not jvm tasks to take in platform independent file and generate the instruction set for the platform/ process jvm is running on.</p>
 </li>
 <li>
-<p>Python - As most of you know there no intermediate step of creating the binary, what could be happening here? Python abstracts out binary from the end user but internally works quite similar to java. It caches the binary and compiles and run it for the user. It also has virtual machine just like java and is platform independent. Running code on virtual machine makes memory management easy for the language. We will see this point below.</p>
+<p>Python - As most of you know there no intermediate step of creating the binary, what could be happening here? Python abstracts out binary from the end user but internally works quite similar to java. Also you might have run python in interactive mode. The execution of the steps happen line by line as the user is executing them. This is made possible python interpreter. Under the hood python also runs a virtual machine to make it possible to run <code>.py</code> files platform independently.</p>
 </li>
 </ol>
 
