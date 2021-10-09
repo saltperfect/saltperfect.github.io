@@ -6,10 +6,20 @@
     <description>Recent content in Posts on salt and pepper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Oct 2021 11:32:47 +0530</lastBuildDate>
+    <lastBuildDate>Wed, 06 Oct 2021 19:27:02 +0530</lastBuildDate>
     
 	<atom:link href="https://saltperfect.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Memory management 101</title>
+      <link>https://saltperfect.github.io/posts/memorymanagment101/</link>
+      <pubDate>Wed, 06 Oct 2021 19:27:02 +0530</pubDate>
+      
+      <guid>https://saltperfect.github.io/posts/memorymanagment101/</guid>
+      <description>This post is in continuation to compiler 101 post. These points came out while discussing language and compiler
+What do you mean when you say this language has good memory management? There are two aspects to memory management in perspective of any language. a. Is the program able to release the unused memory. If a program is unable to do so, it causes memory leaks b. When trying to allocate some memory for the program is the program able to get memory that is not being used by any other programs</description>
+    </item>
     
     <item>
       <title>Compiler101</title>
