@@ -111,7 +111,7 @@
 	}
 }
 </code></pre></div><p><code>net.Listen</code> returns a listener which can accept multiple connections</p>
-<p>for each connection we can handleConnection in a separate goroutine. If you notice our handleConnection runs in a infinite loop and never exists. This is done to enable listening on the connection indefinitely.</p>
+<p>for each connection we can handleConnection in a separate goroutine. If you notice our handleConnection runs in a infinite loop and never exits. This is done to enable listening on the connection indefinitely.</p>
 <p><code>conn.Read</code> is a blocking call and will wait until something is written on the connection.</p>
 <p><code>conn.Write</code> will write back to the connection</p>
 <p>Now comes the part of client</p>
@@ -149,7 +149,7 @@
 <p><code>conn.Write</code> writes to the connection</p>
 <p><code>conn.Read</code> is a blocking call and will wait until something is present to receive</p>
 <p>again our whole logic is wrapped around a infinite loop so we are able to send and receive message until the application crashes.</p>
-<p>You can find the complete code <a href="https://gist.github.com/saltperfect/fb6d7a313aefc163ba27ac3790a0bbd0.js%22">here</a></p>
+<p>You can find the complete code <a href="https://gist.github.com/saltperfect/fb6d7a313aefc163ba27ac3790a0bbd0">here</a></p>
 
   </section>
   <footer>
