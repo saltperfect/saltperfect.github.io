@@ -6,10 +6,21 @@
     <description>Recent content in Posts on salt and pepper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 06 Oct 2021 19:27:02 +0530</lastBuildDate>
+    <lastBuildDate>Mon, 11 Oct 2021 19:11:30 +0530</lastBuildDate>
     
 	<atom:link href="https://saltperfect.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>TCP echo server</title>
+      <link>https://saltperfect.github.io/posts/tcpechoserver/</link>
+      <pubDate>Mon, 11 Oct 2021 19:11:30 +0530</pubDate>
+      
+      <guid>https://saltperfect.github.io/posts/tcpechoserver/</guid>
+      <description>Let go through and try to understand how easy it can be to send and receive messages on tcp socket.
+Lets first talk about the server and how to build one.
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;net&amp;#34; ) func main() { listener, err := net.Listen(&amp;#34;tcp&amp;#34;, &amp;#34;:8080&amp;#34;) if err != nil { panic(err) } defer listener.Close() for { conn, err := listener.Accept() fmt.Println(&amp;#34;request received&amp;#34;) if err != nil { panic(err) } go handleConnection(conn) } } func handleConnection(conn net.</description>
+    </item>
     
     <item>
       <title>Memory Management done right!</title>

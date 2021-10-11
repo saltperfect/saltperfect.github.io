@@ -56,6 +56,30 @@
 
 <article class="c-article p-list-article">
   <header>
+    <h2 class="c-title c-article__title"><a href="https://saltperfect.github.io/posts/tcpechoserver/">TCP echo server</a></h2>
+    <p class="c-article__meta">
+      Posted on
+<time datetime="2021-10-11T19:11:30&#43;05:30">
+  Oct 11, 2021
+</time>
+
+    </p>
+  </header>
+  <div class="c-article__summary">
+    Let go through and try to understand how easy it can be to send and receive messages on tcp socket.
+Lets first talk about the server and how to build one.
+package main import ( &#34;fmt&#34; &#34;net&#34; ) func main() { listener, err := net.Listen(&#34;tcp&#34;, &#34;:8080&#34;) if err != nil { panic(err) } defer listener.Close() for { conn, err := listener.Accept() fmt.Println(&#34;request received&#34;) if err != nil { panic(err) } go handleConnection(conn) } } func handleConnection(conn net.
+  </div>
+  
+  <a href="https://saltperfect.github.io/posts/tcpechoserver/" class="c-article__btn p-list-article__btn">Read more</a>
+  
+</article>
+
+
+
+
+<article class="c-article p-list-article">
+  <header>
     <h2 class="c-title c-article__title"><a href="https://saltperfect.github.io/posts/memorymanagment101/">Memory Management done right!</a></h2>
     <p class="c-article__meta">
       Posted on
