@@ -6,10 +6,21 @@
     <description>Recent content on salt and pepper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 11 Oct 2021 19:11:30 +0530</lastBuildDate>
+    <lastBuildDate>Thu, 03 Feb 2022 12:42:52 +0530</lastBuildDate>
     
 	<atom:link href="https://saltperfect.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Context</title>
+      <link>https://saltperfect.github.io/posts/context/</link>
+      <pubDate>Thu, 03 Feb 2022 12:42:52 +0530</pubDate>
+      
+      <guid>https://saltperfect.github.io/posts/context/</guid>
+      <description>The context package in go provides a path to cancel and propagate cancelling information around the methods and even across http methods
+This comes in quite handy for servers to identify if a client has dropped the connection. This would make the server&amp;rsquo;s efficient by using a lot less of the resources.
+Server Code package main import ( &amp;#34;fmt&amp;#34; &amp;#34;log&amp;#34; &amp;#34;net/http&amp;#34; &amp;#34;time&amp;#34; ) func main() { http.HandleFunc(&amp;#34;/&amp;#34;, rootHandler) log.Fatal(http.ListenAndServe(&amp;#34;localhost:8080&amp;#34;, nil)) } func rootHandler(w http.</description>
+    </item>
     
     <item>
       <title>TCP echo server</title>

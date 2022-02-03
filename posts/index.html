@@ -56,6 +56,30 @@
 
 <article class="c-article p-list-article">
   <header>
+    <h2 class="c-title c-article__title"><a href="https://saltperfect.github.io/posts/context/">Context</a></h2>
+    <p class="c-article__meta">
+      Posted on
+<time datetime="2022-02-03T12:42:52&#43;05:30">
+  Feb 3, 2022
+</time>
+
+    </p>
+  </header>
+  <div class="c-article__summary">
+    The context package in go provides a path to cancel and propagate cancelling information around the methods and even across http methods
+This comes in quite handy for servers to identify if a client has dropped the connection. This would make the server&rsquo;s efficient by using a lot less of the resources.
+Server Code package main import ( &#34;fmt&#34; &#34;log&#34; &#34;net/http&#34; &#34;time&#34; ) func main() { http.HandleFunc(&#34;/&#34;, rootHandler) log.Fatal(http.ListenAndServe(&#34;localhost:8080&#34;, nil)) } func rootHandler(w http.
+  </div>
+  
+  <a href="https://saltperfect.github.io/posts/context/" class="c-article__btn p-list-article__btn">Read more</a>
+  
+</article>
+
+
+
+
+<article class="c-article p-list-article">
+  <header>
     <h2 class="c-title c-article__title"><a href="https://saltperfect.github.io/posts/tcpechoserver/">TCP echo server</a></h2>
     <p class="c-article__meta">
       Posted on
@@ -150,7 +174,7 @@ Compiler and Languages Every compiler has a frontend and a backend. Frontend is 
       
         
         &nbsp;&bull;&nbsp;
-        2021
+        2022
 
         
           &nbsp;&bull;&nbsp;
