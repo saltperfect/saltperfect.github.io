@@ -93,8 +93,10 @@ a lot less of the resources.</p>
 	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;handler started&#34;</span>)
 	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;handler ended&#34;</span>)
 
-	<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Context</span>()
-	<span style="color:#66d9ef">select</span> {
+	<span style="color:#75715e">// access context here
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Context</span>()
+	<span style="color:#75715e">// selecting if our work got done of context was cancelled
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">select</span> {
 	<span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">After</span>(<span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>):
 		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintln</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;hello&#34;</span>)
 	<span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>():
@@ -103,9 +105,7 @@ a lot less of the resources.</p>
 	}
 
 }
-</code></pre></div><p>Ctx is accessed via <code>request object</code>
-Notice here we are listening on two channels and waiting for time to elapse or ctx to be cancelled</p>
-<p>Now let&rsquo;s look how we can actually cancel the context</p>
+</code></pre></div><p>Now let&rsquo;s look how we can actually cancel the context</p>
 <h1 id="client-code">Client Code</h1>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
@@ -120,7 +120,8 @@ Notice here we are listening on two channels and waiting for time to elapse or c
 
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 
-    <span style="color:#75715e">// create context and add time out context to it, calling cancel will cancel the context
+    <span style="color:#75715e">// create context and add cancel context to it, calling cancel will trigger ctx
+</span><span style="color:#75715e"></span>	<span style="color:#75715e">// which can be interpreted on server side
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>()
 	<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">cancel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">WithCancel</span>(<span style="color:#a6e22e">ctx</span>)
     <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">AfterFunc</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>, <span style="color:#a6e22e">cancel</span>)
@@ -142,8 +143,9 @@ Notice here we are listening on two channels and waiting for time to elapse or c
 	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
 	<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
 }
-</code></pre></div><p>By calling cancel we quickly getting the response back from server without the 5 second delay</p>
+</code></pre></div><p>By calling cancel we quickly getting the response back from server without the 5 second delay.</p>
 <h1 id="passing-values-in-ctx">Passing Values in Ctx</h1>
+<p>Context package gives the ability to pass values in the context as well.</p>
 <p>Rule of thumb while passing values, the value should have the impact on how the program behaves. A good example could be passing uuid&rsquo;s, request&rsquo;ids</p>
 
   </section>
