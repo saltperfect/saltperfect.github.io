@@ -4,16 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
   
-  <title>TCP echo server</title>
-  <meta property="og:title" content="TCP echo server" />
-  <meta name="twitter:title" content="TCP echo server" />
+  <title>Context</title>
+  <meta property="og:title" content="Context" />
+  <meta name="twitter:title" content="Context" />
   
 
   
 
   <meta name="author" content=""/>
   <meta property="og:site_name" content="salt and pepper" />
-  <meta property="og:url" content="https://saltperfect.github.io/posts/tcpechoserver/" />
+  <meta property="og:url" content="https://saltperfect.github.io/posts/context/" />
 
   
   <meta name="twitter:card" content="summary" />
@@ -53,13 +53,13 @@
 
 <article class="p-article">
   <header>
-    <h1>TCP echo server</h1>
+    <h1>Context</h1>
     <div>
       
         <div class="c-time">
           Posted on
-<time datetime="2021-10-11T19:11:30&#43;05:30">
-  Oct 11, 2021
+<time datetime="2022-02-03T12:42:52&#43;05:30">
+  Feb 3, 2022
 </time>
 
         </div>
@@ -69,88 +69,82 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <p>Let go through and try to understand how easy it can be to send and receive messages on tcp socket.</p>
-<p>Lets first talk about the server and how to build one.</p>
+    <p>The context package in go provides a path to cancel and propagate cancelling information around the methods and even across http methods</p>
+<p>This comes in quite handy for servers to identify if a client has dropped the connection. This would make the server&rsquo;s efficient by using
+a lot less of the resources.</p>
+<h1 id="server-code">Server Code</h1>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
 <span style="color:#f92672">import</span> (
 	<span style="color:#e6db74">&#34;fmt&#34;</span>
-	<span style="color:#e6db74">&#34;net&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+	<span style="color:#e6db74">&#34;time&#34;</span>
 )
 
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#a6e22e">listener</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Listen</span>(<span style="color:#e6db74">&#34;tcp&#34;</span>, <span style="color:#e6db74">&#34;:8080&#34;</span>)
+
+	<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">HandleFunc</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">rootHandler</span>)
+
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ListenAndServe</span>(<span style="color:#e6db74">&#34;localhost:8080&#34;</span>, <span style="color:#66d9ef">nil</span>))
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">rootHandler</span>(<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">ResponseWriter</span>, <span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Request</span>) {
+	<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;handler started&#34;</span>)
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;handler ended&#34;</span>)
+
+	<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Context</span>()
+	<span style="color:#66d9ef">select</span> {
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">After</span>(<span style="color:#ae81ff">5</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>):
+		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintln</span>(<span style="color:#a6e22e">w</span>, <span style="color:#e6db74">&#34;hello&#34;</span>)
+	<span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Done</span>():
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;context reached, %s&#34;</span>, <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Err</span>().<span style="color:#a6e22e">Error</span>())
+		<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">Error</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">ctx</span>.<span style="color:#a6e22e">Err</span>().<span style="color:#a6e22e">Error</span>(), <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusInternalServerError</span>)
+	}
+
+}
+</code></pre></div><p>Ctx is accessed via <code>request object</code>
+Notice here we are listening on two channels and waiting for time to elapse or ctx to be cancelled</p>
+<p>Now let&rsquo;s look how we can actually cancel the context</p>
+<h1 id="client-code">Client Code</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;context&#34;</span>
+	<span style="color:#e6db74">&#34;io&#34;</span>
+	<span style="color:#e6db74">&#34;log&#34;</span>
+	<span style="color:#e6db74">&#34;net/http&#34;</span>
+	<span style="color:#e6db74">&#34;os&#34;</span>
+	<span style="color:#e6db74">&#34;time&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+
+    <span style="color:#75715e">// create context and add time out context to it, calling cancel will cancel the context
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">ctx</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Background</span>()
+	<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">cancel</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">WithCancel</span>(<span style="color:#a6e22e">ctx</span>)
+    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">AfterFunc</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>, <span style="color:#a6e22e">cancel</span>)
+    <span style="color:#75715e">// creating request to attach ctx to it
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">MethodGet</span>, <span style="color:#e6db74">&#34;http://localhost:8080&#34;</span>, <span style="color:#66d9ef">nil</span>)
 	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		panic(<span style="color:#a6e22e">err</span>)
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;error: request made: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
 	}
-	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">listener</span>.<span style="color:#a6e22e">Close</span>()
-	<span style="color:#66d9ef">for</span> {
-		<span style="color:#a6e22e">conn</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">listener</span>.<span style="color:#a6e22e">Accept</span>()
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;request received&#34;</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			panic(<span style="color:#a6e22e">err</span>)
-		}
-		<span style="color:#66d9ef">go</span> <span style="color:#a6e22e">handleConnection</span>(<span style="color:#a6e22e">conn</span>)
-	}
-}
-
-<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleConnection</span>(<span style="color:#a6e22e">conn</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Conn</span>) {
-	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Close</span>()
-	<span style="color:#66d9ef">for</span> {
-		<span style="color:#a6e22e">messages</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, <span style="color:#ae81ff">128</span>)
-		<span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">read_err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">messages</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">read_err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;failed:&#34;</span>, <span style="color:#a6e22e">read_err</span>)
-			<span style="color:#66d9ef">return</span>
-		}
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Got: &#34;</span>, string(<span style="color:#a6e22e">messages</span>[:<span style="color:#a6e22e">n</span>]))
-		<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">write_err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">messages</span>[:<span style="color:#a6e22e">n</span>])
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">write_err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;failed:&#34;</span>, <span style="color:#a6e22e">write_err</span>)
-			<span style="color:#66d9ef">return</span>
-		}
-	}
-}
-</code></pre></div><p><code>net.Listen</code> returns a listener which can accept multiple connections</p>
-<p>for each connection we can handleConnection in a separate goroutine. If you notice our handleConnection runs in a infinite loop and never exits. This is done to enable listening on the connection indefinitely.</p>
-<p><code>conn.Read</code> is a blocking call and will wait until something is written on the connection.</p>
-<p><code>conn.Write</code> will write back to the connection</p>
-<p>Now comes the part of client</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
-	<span style="color:#a6e22e">conn</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Dial</span>(<span style="color:#e6db74">&#34;tcp&#34;</span>, <span style="color:#e6db74">&#34;localhost:8080&#34;</span>)
+	<span style="color:#a6e22e">req</span> = <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">WithContext</span>(<span style="color:#a6e22e">ctx</span>)
+	<span style="color:#75715e">// executing the request
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">resp</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">DefaultClient</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">req</span>)
 	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;Failed to dial: %v&#34;</span>, <span style="color:#a6e22e">err</span>)
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;error while getting, %v&#34;</span>, <span style="color:#a6e22e">err</span>)
 	}
-	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Close</span>()
 
-	<span style="color:#a6e22e">scanner</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bufio</span>.<span style="color:#a6e22e">NewScanner</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdin</span>)
-	<span style="color:#a6e22e">messages</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, <span style="color:#ae81ff">128</span>)
-	<span style="color:#66d9ef">for</span> {
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;enter the message to send&#34;</span>)
-		<span style="color:#a6e22e">scanner</span>.<span style="color:#a6e22e">Scan</span>()
-		<span style="color:#a6e22e">message</span> <span style="color:#f92672">:=</span> []byte(<span style="color:#a6e22e">scanner</span>.<span style="color:#a6e22e">Text</span>())
-
-		<span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">write_err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Write</span>([]byte(<span style="color:#a6e22e">message</span>))
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">write_err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;failed:&#34;</span>, <span style="color:#a6e22e">write_err</span>)
-			<span style="color:#66d9ef">return</span>
-		}
-
-		<span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">read_err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Read</span>(<span style="color:#a6e22e">messages</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">read_err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;failed:&#34;</span>, <span style="color:#a6e22e">read_err</span>)
-			<span style="color:#66d9ef">return</span>
-		}
-
-		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;read %d bytes, echo: %s\n&#34;</span>, <span style="color:#a6e22e">n</span>, <span style="color:#a6e22e">messages</span>[:<span style="color:#a6e22e">n</span>])
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">StatusCode</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatalf</span>(<span style="color:#e6db74">&#34;error: response, %v&#34;</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
 	}
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>.<span style="color:#a6e22e">Close</span>()
+	<span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">resp</span>.<span style="color:#a6e22e">Body</span>)
 }
-</code></pre></div><p><code>net.Dial</code> dials in and tries to create a connection</p>
-<p><code>scanner.Scan</code> scans for the input</p>
-<p><code>conn.Write</code> writes to the connection</p>
-<p><code>conn.Read</code> is a blocking call and will wait until something is present to receive</p>
-<p>again our whole logic is wrapped around a infinite loop so we are able to send and receive message until the application crashes.</p>
-<p>You can find the complete code <a href="https://gist.github.com/saltperfect/fb6d7a313aefc163ba27ac3790a0bbd0">here</a></p>
+</code></pre></div><p>By calling cancel we quickly getting the response back from server without the 5 second delay</p>
+<h1 id="passing-values-in-ctx">Passing Values in Ctx</h1>
+<p>Rule of thumb while passing values, the value should have the impact on how the program behaves. A good example could be passing uuid&rsquo;s, request&rsquo;ids</p>
 
   </section>
   <footer>
@@ -165,7 +159,7 @@
         </div>
         <div class="c-pagination__older">
           
-          <a href="https://saltperfect.github.io/posts/memorymanagment101/">Older</a>
+          <a href="https://saltperfect.github.io/posts/tcpechoserver/">Older</a>
           
         </div>
       </div>
@@ -188,7 +182,7 @@
       
         
         &nbsp;&bull;&nbsp;
-        2021
+        2022
 
         
           &nbsp;&bull;&nbsp;
