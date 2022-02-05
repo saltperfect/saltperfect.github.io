@@ -70,9 +70,9 @@
   
   <section id="js-article" class="p-article__body">
     <h1 id="mapping-current-directory-to-container-directory-for-realtime-updates">Mapping current directory to container directory for realtime updates.</h1>
-<p>It&rsquo;s a Sunday afternoon and you decided to hack something up but when you started to install those creepy deps, you get ERRORS!!. To solve this you spend a lot of time on stackoverflow but resolutions there want some unknown commands to run but you don&rsquo;t want to mess up with your computers installation. This happens with the best of us and instead of hacking away you end up in dependency hell.</p>
+<p>It&rsquo;s a Sunday afternoon and you decided to hack something up but when you started to install those creepy deps, you get ERRORS!!. To solve this you spend a lot of time on stackoverflow. Maybe you find some resolutions they want you to run some unknown commands you don&rsquo;t want to mess up you computer. This happens with the best of us and instead of hacking away you end up in dependency hell.</p>
 <p>Sure you could write your code and install dependencies in docker and copy over you code to run there but that would take a painful amount of time. But wait, there&rsquo;s more&hellip;</p>
-<p>What if I told you could get a environment using docker and can map your personal directory with on of the directory in docker. This way you will get real time updates of your complete directory.</p>
+<p>What if I told you could get a environment using docker and can map your personal directory with one of the directory in the docker container. This way you will get real time updates of your computer&rsquo;s directory.</p>
 <p>Sound Fun, Let me show you how.</p>
 <p>Make a simple docker File in empty directory</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> golang:1.10</span><span style="color:#960050;background-color:#1e0010">
