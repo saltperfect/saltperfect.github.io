@@ -82,16 +82,16 @@
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
     <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;hello world!\n&#34;</span>)
 }
-</code></pre></div><p>From the current directory run <code>docker build -t simple-image .1</code></p>
-<p>This would create an image with same simple-image</p>
+</code></pre></div><p>From the current directory run <code>docker build -t simple-image .</code></p>
+<p>This would create an image with name simple-image</p>
 <p>From the current directory run <code>docker run --rm -it -v $(pwd):/go/src/app simple-image</code></p>
 <ol>
 <li>&ndash;rm to remove the image after running</li>
 <li>-it to get inside the container</li>
-<li>-v is for mapping you current directory $(pwd) to /go/src/app directory which would be created if not present</li>
+<li>-v is for mapping you current directory $(pwd) to /go/src/app directory which would be created if not present in docker container</li>
 </ol>
 <p>This will log you in to the container and if you <code>run cat src/app/main.go</code>
-you will be able to see your main.go file which you just created.</p>
+you will be able to see your main.go file which you just created in your computer.</p>
 <pre><code>root@8d0ff4bde24b:/go# cat src/app/main.go 
 package main
 
