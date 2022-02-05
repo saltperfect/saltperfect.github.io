@@ -69,9 +69,9 @@
   </header>
   
   <section id="js-article" class="p-article__body">
-    <p>The context package in go provides a path to cancel and propagate cancelling information around the methods and even across http methods</p>
-<p>This comes in quite handy for servers to identify if a client has dropped the connection. This would make the server&rsquo;s efficient by using
-a lot less of the resources.</p>
+    <p>The context package in go provides a path to cancel and propagate cancelling information around the methods and even across http servers.</p>
+<p>Consider you request your server with some information but want to cancel that request halfway, or maybe somehow the connection get drops. The ability to propagate that information to server and trigger cancellation of that request will save you lot of computations.</p>
+<p>The below code is in example implementation of exactly this.</p>
 <h1 id="server-code">Server Code</h1>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
@@ -146,7 +146,7 @@ a lot less of the resources.</p>
 </code></pre></div><p>By calling cancel we quickly getting the response back from server without the 5 second delay.</p>
 <h1 id="passing-values-in-ctx">Passing Values in Ctx</h1>
 <p>Context package gives the ability to pass values in the context as well.</p>
-<p>Rule of thumb while passing values, the value should have the impact on how the program behaves. A good example could be passing uuid&rsquo;s, request&rsquo;ids</p>
+<p>Rule of thumb while passing values, the value should have the impact on how the program behaves. A good example could be passing uuid&rsquo;s, request&rsquo;ids.</p>
 
   </section>
   <footer>
@@ -157,6 +157,7 @@ a lot less of the resources.</p>
       <div class="c-pagination__ctrl">
         <div class="c-pagination__newer">
           
+          <a href="https://saltperfect.github.io/posts/docker-experiments/">Newer</a>
           
         </div>
         <div class="c-pagination__older">

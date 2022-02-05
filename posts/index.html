@@ -56,6 +56,28 @@
 
 <article class="c-article p-list-article">
   <header>
+    <h2 class="c-title c-article__title"><a href="https://saltperfect.github.io/posts/docker-experiments/">Docker Experiments</a></h2>
+    <p class="c-article__meta">
+      Posted on
+<time datetime="2022-02-05T13:01:23&#43;05:30">
+  Feb 5, 2022
+</time>
+
+    </p>
+  </header>
+  <div class="c-article__summary">
+    Mapping current directory to container directory for realtime updates. It&rsquo;s a Sunday afternoon and you decided to hack something up but when you started to install those creepy deps, you get ERRORS!!. To solve this you spend a lot of time on stackoverflow but resolutions there want some unknown commands to run but you don&rsquo;t want to mess up with your computers installation. This happens with the best of us and instead of hacking away you end up in dependency hell.
+  </div>
+  
+  <a href="https://saltperfect.github.io/posts/docker-experiments/" class="c-article__btn p-list-article__btn">Read more</a>
+  
+</article>
+
+
+
+
+<article class="c-article p-list-article">
+  <header>
     <h2 class="c-title c-article__title"><a href="https://saltperfect.github.io/posts/context/">Context</a></h2>
     <p class="c-article__meta">
       Posted on
@@ -66,9 +88,9 @@
     </p>
   </header>
   <div class="c-article__summary">
-    The context package in go provides a path to cancel and propagate cancelling information around the methods and even across http methods
-This comes in quite handy for servers to identify if a client has dropped the connection. This would make the server&rsquo;s efficient by using a lot less of the resources.
-Server Code package main import ( &#34;fmt&#34; &#34;log&#34; &#34;net/http&#34; &#34;time&#34; ) func main() { http.HandleFunc(&#34;/&#34;, rootHandler) log.Fatal(http.ListenAndServe(&#34;localhost:8080&#34;, nil)) } func rootHandler(w http.
+    The context package in go provides a path to cancel and propagate cancelling information around the methods and even across http servers.
+Consider you request your server with some information but want to cancel that request halfway, or maybe somehow the connection get drops. The ability to propagate that information to server and trigger cancellation of that request will save you lot of computations.
+The below code is in example implementation of exactly this.
   </div>
   
   <a href="https://saltperfect.github.io/posts/context/" class="c-article__btn p-list-article__btn">Read more</a>
