@@ -6,10 +6,22 @@
     <description>Recent content on salt and pepper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Feb 2022 13:01:23 +0530</lastBuildDate>
+    <lastBuildDate>Sat, 19 Feb 2022 11:37:22 +0530</lastBuildDate>
     
 	<atom:link href="https://saltperfect.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Connect4 Minimax AI</title>
+      <link>https://saltperfect.github.io/posts/connect4-minimax/</link>
+      <pubDate>Sat, 19 Feb 2022 11:37:22 +0530</pubDate>
+      
+      <guid>https://saltperfect.github.io/posts/connect4-minimax/</guid>
+      <description>There is already a ton of material on the internet about how to write connect 4 ai. I have tried to use that information to create my own command line connect 4 game.
+Also I have open sourced the code to invite collaboration or just have some fun playing the game.
+https://github.com/saltperfect/connect4-ai
+Leave a start you had fun playing it.</description>
+    </item>
     
     <item>
       <title>Docker Experiments</title>
